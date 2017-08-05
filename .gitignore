@@ -1,8 +1,0 @@
-pages/
-AmosNetWeights.npy
-*.pyc
-runs/
-final_run
-slurm*
-accuracy*
-loss*
