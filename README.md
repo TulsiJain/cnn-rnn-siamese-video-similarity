@@ -12,15 +12,13 @@
 | 2b | conv6 | YES | 1000 | 3 | 50 | 0.0 | 8 | 17 | contrastive | [accuracy](images/exp2/accuracy_50.pdf)  [loss](images/exp2/loss_50.pdf) | - | - | 1041-116-0 | Simplified | INTERMEDIATE | 16hrs | 1e-2 with decay at 100 steps to 0.95x | NO |
 | 3a | conv6 | YES | 1000 | 3 | 50 | 0.0 | 8 | 25 | contrastive |  [accuracy](images/exp3/accuracy_3a.pdf)  [loss](images/exp3/loss_3a.pdf) | 704/1042 | 81/115 | 1042-115-0 | Simplified (Ratio Maintained) | INTERMEDIATE(different) | 9.2hrs | 1e-2 with decay at 200 steps to 0.95x | YES |
 | 3b | conv6 | NO | NA | 3 | 50 | 0.0 | 8 | 25 | contrastive |  [accuracy](images/exp3/accuracy_3b.pdf)  [loss](images/exp3/loss_3b.pdf) | 702/1042 | 81/115 | 1042-115-0 | Simplified (Ratio Maintained) | INTERMEDIATE(different) | 9hrs | 1e-2 with decay at 200 steps to 0.95x | YES |
-| 3c | conv6 | NO | NA | 1 | 50 | 0.0 | 8 | 25 | contrastive |  [accuracy](images/exp3/accuracy_3b.pdf)  [loss](images/exp3/loss_3b.pdf) | 602/1042 | 71/115 | 1042-115-0 | Simplified (Ratio Maintained) | INTERMEDIATE(different) | - | 1e-2 with decay at 200 steps to 0.95x | YES |
-
+| 3c | conv6 | NO | NA | 1 | 50 | 0.0 | 8 | 25 | contrastive |  [accuracy](images/exp3/accuracy_3b.pdf)  [loss](images/exp3/loss_3b.pdf) | 602/1042 | 71/115 | 1042-115-0 | Simplified (Ratio Maintained) | INTERMEDIATE(different) | 9.25hrs | 1e-2 with decay at 200 steps to 0.95x | YES |
 | 3d | conv6 | YES | 1000 | 1 | 50 | 0.0 | 8 | - | contrastive |   | - | - | 1042-115-0 | Simplified (Ratio Maintained) | INTERMEDIATE(different) | - | 1e-2 with decay at 200 steps to 0.95x | YES|
-
 | 3e | conv6 | YES | 1000 | 7 | 50 | 0.0 | 8 | 2(online) | contrastive |   | - | - | 1042-115-0 | Simplified (Ratio Maintained) | INTERMEDIATE(different) | - | 1e-2 with decay at 200 steps to 0.95x | YES |
 
 
 ### Some Jargons used above  
-* Fill --> originally collected dataset (~750 pairs of negative and positve videos each)
+* Full --> originally collected dataset (~750 pairs of negative and positve videos each)
 * Simplified --> Positive Samples have been refined to pairs in opposite or same directions
 * Simplified(Ratio Maintained) --> Positive Samples/Negative Samples ratio maintained in training and validation
 * BASIC --> Basic data-augmentation/transformations only
