@@ -1,0 +1,273 @@
+
+Parameters:
+ALLOW_SOFT_PLACEMENT=False
+BATCH_SIZE=8
+CHECKPOINT_EVERY=5
+CONV_LAYER=pool6
+CONV_LAYER_WEIGHT_PRETRAINED_PATH=/data4/abhijeet/gta/AmosNetWeights.npy
+DROPOUT_KEEP_PROB=0.5
+EMBEDDING_DIM=1000
+HIDDEN_DIM=50
+L2_REG_LAMBDA=0.0
+LOG_DEVICE_PLACEMENT=False
+LOSS=contrastive
+MAX_FRAMES=20
+NAME=4a
+NUM_EPOCHS=25
+NUM_LSTM_LAYERS=3
+PROJECTION=True
+SUMMARIES_DIR=/data4/abhijeet/gta/summaries/
+TRAINING_FILE_PATH=/data4/abhijeet/gta/final/
+
+Loading training data from /data4/abhijeet/gta/final/
+/data4/abhijeet/gta/final/mapping_file
+Train/Dev split for /data4/abhijeet/gta/final/: 1042/115
+starting graph def
+started session
+initialized convModel and siameseModel object
+defined training_ops
+defined gradient summaries
+Writing to /data4/abhijeet/gta/runs/1502288045
+
+projection_1:0
+bwside1/bidirectional_rnn/fw/multi_rnn_cell/cell_0/basic_lstm_cell/kernel:0
+bwside1/bidirectional_rnn/fw/multi_rnn_cell/cell_0/basic_lstm_cell/bias:0
+bwside1/bidirectional_rnn/fw/multi_rnn_cell/cell_1/basic_lstm_cell/kernel:0
+bwside1/bidirectional_rnn/fw/multi_rnn_cell/cell_1/basic_lstm_cell/bias:0
+bwside1/bidirectional_rnn/fw/multi_rnn_cell/cell_2/basic_lstm_cell/kernel:0
+bwside1/bidirectional_rnn/fw/multi_rnn_cell/cell_2/basic_lstm_cell/bias:0
+bwside1/bidirectional_rnn/bw/multi_rnn_cell/cell_0/basic_lstm_cell/kernel:0
+bwside1/bidirectional_rnn/bw/multi_rnn_cell/cell_0/basic_lstm_cell/bias:0
+bwside1/bidirectional_rnn/bw/multi_rnn_cell/cell_1/basic_lstm_cell/kernel:0
+bwside1/bidirectional_rnn/bw/multi_rnn_cell/cell_1/basic_lstm_cell/bias:0
+bwside1/bidirectional_rnn/bw/multi_rnn_cell/cell_2/basic_lstm_cell/kernel:0
+bwside1/bidirectional_rnn/bw/multi_rnn_cell/cell_2/basic_lstm_cell/bias:0
+init all variables
+Epoch Number: 0
+train_loss =0.119479408627
+total_train_correct=635.0/total_train=1042
+
+Evaluation:
+val_loss =0.116838557338
+total_val_correct=68.0/total_val=115
+Total time for 0 th-epoch is 1504.22457695
+
+Epoch Number: 1
+train_loss =0.115838422399
+total_train_correct=663.0/total_train=1042
+
+Evaluation:
+val_loss =0.116636906111
+total_val_correct=76.0/total_val=115
+Total time for 1 th-epoch is 1430.29530716
+
+Epoch Number: 2
+train_loss =0.113182855273
+total_train_correct=689.0/total_train=1042
+
+Evaluation:
+val_loss =0.112204434496
+total_val_correct=76.0/total_val=115
+Total time for 2 th-epoch is 1419.52533603
+
+Epoch Number: 3
+train_loss =0.113370374167
+total_train_correct=695.0/total_train=1042
+
+Evaluation:
+val_loss =0.114361164784
+total_val_correct=69.0/total_val=115
+Total time for 3 th-epoch is 1458.46884418
+
+Epoch Number: 4
+train_loss =0.113586118459
+total_train_correct=687.0/total_train=1042
+
+Evaluation:
+val_loss =0.112660648447
+total_val_correct=77.0/total_val=115
+Saved model 4 with checkpoint to /data4/abhijeet/gta/runs/1502288045/checkpoints/model
+Total time for 4 th-epoch is 1789.67517996
+
+Epoch Number: 5
+train_loss =0.114500810741
+total_train_correct=680.0/total_train=1042
+
+Evaluation:
+val_loss =0.109621916809
+total_val_correct=78.0/total_val=115
+Total time for 5 th-epoch is 1472.34073806
+
+Epoch Number: 6
+train_loss =0.115487791104
+total_train_correct=689.0/total_train=1042
+
+Evaluation:
+val_loss =0.109306062531
+total_val_correct=79.0/total_val=115
+Total time for 6 th-epoch is 1699.78426099
+
+Epoch Number: 7
+train_loss =0.113850475176
+total_train_correct=699.0/total_train=1042
+
+Evaluation:
+val_loss =0.115749160686
+total_val_correct=76.0/total_val=115
+Total time for 7 th-epoch is 1868.87631488
+
+Epoch Number: 8
+train_loss =0.113552003284
+total_train_correct=693.0/total_train=1042
+
+Evaluation:
+val_loss =0.106059432289
+total_val_correct=79.0/total_val=115
+Total time for 8 th-epoch is 1691.02483106
+
+Epoch Number: 9
+train_loss =0.113366313221
+total_train_correct=700.0/total_train=1042
+
+Evaluation:
+val_loss =0.112595043429
+total_val_correct=79.0/total_val=115
+Saved model 9 with checkpoint to /data4/abhijeet/gta/runs/1502288045/checkpoints/model
+Total time for 9 th-epoch is 1968.30989695
+
+Epoch Number: 10
+train_loss =0.110915025128
+total_train_correct=697.0/total_train=1042
+
+Evaluation:
+val_loss =0.110280161124
+total_val_correct=80.0/total_val=115
+Total time for 10 th-epoch is 2664.78211093
+
+Epoch Number: 11
+train_loss =0.114616440463
+total_train_correct=690.0/total_train=1042
+
+Evaluation:
+val_loss =0.112837802586
+total_val_correct=76.0/total_val=115
+Total time for 11 th-epoch is 2069.62837386
+
+Epoch Number: 12
+train_loss =0.114469361379
+total_train_correct=694.0/total_train=1042
+
+Evaluation:
+val_loss =0.107804251203
+total_val_correct=80.0/total_val=115
+Total time for 12 th-epoch is 1355.33314991
+
+Epoch Number: 13
+train_loss =0.112469352553
+total_train_correct=701.0/total_train=1042
+
+Evaluation:
+val_loss =0.109996647469
+total_val_correct=78.0/total_val=115
+Total time for 13 th-epoch is 1422.81460595
+
+Epoch Number: 14
+train_loss =0.112866893597
+total_train_correct=701.0/total_train=1042
+
+Evaluation:
+val_loss =0.108747571383
+total_val_correct=78.0/total_val=115
+Total time for 14 th-epoch is 4119.86942697
+
+Epoch Number: 15
+train_loss =0.111843877072
+total_train_correct=697.0/total_train=1042
+
+Evaluation:
+val_loss =0.1095161426
+total_val_correct=78.0/total_val=115
+Total time for 15 th-epoch is 4513.95358682
+
+Epoch Number: 16
+train_loss =0.111854149104
+total_train_correct=698.0/total_train=1042
+
+Evaluation:
+val_loss =0.109068802631
+total_val_correct=78.0/total_val=115
+Total time for 16 th-epoch is 4644.56967402
+
+Epoch Number: 17
+train_loss =0.113001070874
+total_train_correct=701.0/total_train=1042
+
+Evaluation:
+val_loss =0.107041493917
+total_val_correct=78.0/total_val=115
+Total time for 17 th-epoch is 4465.68833089
+
+Epoch Number: 18
+train_loss =0.113855743995
+total_train_correct=700.0/total_train=1042
+
+Evaluation:
+val_loss =0.109675426328
+total_val_correct=78.0/total_val=115
+Total time for 18 th-epoch is 4489.69408703
+
+Epoch Number: 19
+train_loss =0.109902218413
+total_train_correct=699.0/total_train=1042
+
+Evaluation:
+val_loss =0.111014918529
+total_val_correct=78.0/total_val=115
+Total time for 19 th-epoch is 4557.83511305
+
+Epoch Number: 20
+train_loss =0.111805991904
+total_train_correct=701.0/total_train=1042
+
+Evaluation:
+val_loss =0.109330185227
+total_val_correct=80.0/total_val=115
+Total time for 20 th-epoch is 1802.96471596
+
+Epoch Number: 21
+train_loss =0.111916800535
+total_train_correct=700.0/total_train=1042
+
+Evaluation:
+val_loss =0.108565801755
+total_val_correct=79.0/total_val=115
+Total time for 21 th-epoch is 1468.63312101
+
+Epoch Number: 22
+train_loss =0.111628777128
+total_train_correct=695.0/total_train=1042
+
+Evaluation:
+val_loss =0.107500000687
+total_val_correct=76.0/total_val=115
+Total time for 22 th-epoch is 1552.10942602
+
+Epoch Number: 23
+train_loss =0.111886629252
+total_train_correct=701.0/total_train=1042
+
+Evaluation:
+val_loss =0.107276116441
+total_val_correct=78.0/total_val=115
+Total time for 23 th-epoch is 2629.13688278
+
+Epoch Number: 24
+train_loss =0.110524649743
+total_train_correct=703.0/total_train=1042
+
+Evaluation:
+val_loss =0.113159874163
+total_val_correct=78.0/total_val=115
+Total time for 24 th-epoch is 2613.4251771
+
+Total time for 25 epochs is 60699.2494481
