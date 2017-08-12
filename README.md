@@ -1,6 +1,6 @@
 # Deep CNN + LSTM siamese network for video similarity
 
-Website for Data  (10.2.132.196/gta/gta_data.php) (Only visible inside IIIT's network)
+[Website for  Visualizing Data](10.2.132.196/gta/gta_data.php) (Only visible inside IIIT's network)
 
 | Exp #  | Conv Layer | Embedding / Projection Layer | Embedding / Projection Dim | Num LSTM-layer | LSTM-hidden-dims | l2-reg | batch-size | num-epochs | loss | images | train-accuracy | val-accuracy | train-val-test split| dataset-type | Data-Augmentations | Runtime| learning-rate | tied-weights | convNet training |
 |-----------| -----------|-----------------|---------------|------------|------------------|--------|-------| ---------- | ---- | ------ | -------------- | ------------ | -------------------| ----------------- |---------------| ------- | ---------- | ------ |
