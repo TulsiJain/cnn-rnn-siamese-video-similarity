@@ -18,12 +18,16 @@
 | 4f | conv6 | YES| 1000 | 1 | 80 | 0.0 | 8 | 4 | contrastive |  [accuracy](images/exp4/accuracy_4f.pdf)  [loss](images/exp4/loss_4f.pdf) | - | - | 1042-115-0 | Simplified (Ratio Maintained) | INTERMEDIATE(different) | - | 1e-2 with decay at 200 steps to 0.95x | YES| YES |
 | 4g | conv6 | NO| NA | 1 | 80 | 0.0 | 8 | 6 | contrastive |  [accuracy](images/exp4/accuracy_4g.pdf)  [loss](images/exp4/loss_4g.pdf) | - | - | 1042-115-0 | Simplified (Ratio Maintained) | INTERMEDIATE(different) | - | 1e-2 with decay at 200 steps to 0.95x | YES| YES |
 | 4h | conv6 | NO| NA | 2 | 80 | 0.0 | 8 | 9 | contrastive |  [accuracy](images/exp4/accuracy_4h.pdf)  [loss](images/exp4/loss_4h.pdf) | - | - | 1042-115-0 | Simplified (Ratio Maintained) | INTERMEDIATE(different) | - | 1e-2 with decay at 200 steps to 0.95x | YES| YES |
+| 5a | conv6 | YES| 1000 | 2 | 50 | 0.0 | 8 | 25 | contrastive |  [accuracy](images/exp5/accuracy_5a.pdf)  [loss](images/exp5/loss_5b.pdf) | 702/878 | 78/98 | 878-97-0 | Ultra Simplified (Ratio Maintained) | INTERMEDIATE(different) | 7.5hrs | 1e-2 with decay at 200 steps to 0.95x | YES| YES |
+| 5b | conv6 | YES| 1000 | 2 | 250 | 0.0 | 8 | 25 | contrastive |  [accuracy](images/exp5/accuracy_5a.pdf)  [loss](images/exp5/loss_5b.pdf) | 650/947 | 76/105 | 878-97-0 | Ultra Simplified (Ratio Maintained) | INTERMEDIATE(different) | 6hrs | 1e-2 with decay at 200 steps to 0.95x | YES| YES |
+| 5c | conv6 | YES| 1000 | 2 | 50 | 0.0 | 8 | 9 | contrastive |  [accuracy](images/exp5/accuracy_5c.pdf)  [loss](images/exp5/loss_5c.pdf) | - | - | 878-97-0 | Ultra Simplified (Ratio Maintained) | INTERMEDIATE(different) | 3.5hrs | 1e-2 with decay at 200 steps to 0.95x | YES| YES |
 
 
 ### Some Jargons used above  
 * Full --> originally collected dataset (~750 pairs of negative and positve videos each)
 * Simplified --> Positive Samples have been refined to pairs in opposite or same directions
 * Simplified(Ratio Maintained) --> Positive Samples/Negative Samples ratio maintained in training and validation
+* UltraSimplified(Ratio Maintained) --> Only same direction videos as hosted on website 
 * BASIC --> Basic data-augmentation/transformations only
 * INTERMEDIATE --> Intermediate level of data-augmentataions/transformations
 * INTERMEDIATE(different) --> In a pair of videos both videos transformed seprately.
