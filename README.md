@@ -1,5 +1,6 @@
 # Deep CNN + LSTM siamese network for video similarity
 
+Website for Data  (10.2.132.196/gta/gta_data.php) (Only visible inside IIIT's network)
 
 | Exp #  | Conv Layer | Embedding / Projection Layer | Embedding / Projection Dim | Num LSTM-layer | LSTM-hidden-dims | l2-reg | batch-size | num-epochs | loss | images | train-accuracy | val-accuracy | train-val-test split| dataset-type | Data-Augmentations | Runtime| learning-rate | tied-weights | convNet training |
 |-----------| -----------|-----------------|---------------|------------|------------------|--------|-------| ---------- | ---- | ------ | -------------- | ------------ | -------------------| ----------------- |---------------| ------- | ---------- | ------ |
@@ -19,7 +20,6 @@
 | 4h | conv6 | NO| NA | 2 | 80 | 0.0 | 8 | 9 | contrastive |  [accuracy](images/exp4/accuracy_4h.pdf)  [loss](images/exp4/loss_4h.pdf) | - | - | 1042-115-0 | Simplified (Ratio Maintained) | INTERMEDIATE(different) | - | 1e-2 with decay at 200 steps to 0.95x | YES| YES |
 | 5a | conv6 | YES| 1000 | 3 | 50 | 0.0 | 8 | 25 | contrastive |  [accuracy](images/exp5/accuracy_5a.pdf)  [loss](images/exp5/loss_5b.pdf) | 702/878 | 78/98 | 878-97-0 | Ultra Simplified (Ratio Maintained) | INTERMEDIATE(different) | 7.5hrs | 1e-2 with decay at 200 steps to 0.95x | YES| YES |
 | 5b | conv6 | YES| 1000 | 3 | 250 | 0.0 | 8 | 25 | contrastive |  [accuracy](images/exp5/accuracy_5a.pdf)  [loss](images/exp5/loss_5b.pdf) | 650/947 | 76/105 | 878-97-0 | Ultra Simplified (Ratio Maintained) | INTERMEDIATE(different) | 6hrs | 1e-2 with decay at 200 steps to 0.95x | YES| YES |
-
 
 
 ### Some Jargons used above  
