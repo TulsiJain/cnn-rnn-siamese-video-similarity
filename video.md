@@ -2,6 +2,7 @@
 
 [Website for  Visualizing Data](http://10.2.132.196/gta/gta_data.php) (Only visible inside IIIT's network)
 
+Following parameters were fixed
 + Convolutional Networks -- features (pool6 - layer), initialized with amos-Net weights.
 + No-projection-layer
 + lstm layer (with 50 hidden units)
