@@ -14,7 +14,7 @@
 + Contrastive Loss
 + train/val ratio: 10% of the total data in the experiment
 
-| Exp #  |  images | train-accuracy | val-accuracy | train-val-test split | positive-negative | weather-type in pair of videos | trajectory-type | learning-rate | convNet training | features from LSTM | Num LSTM Layers|
+| Exp #  |  images | train-accuracy | val-accuracy | positive-negative | weather-type in pair of videos | trajectory-type | learning-rate | convNet training | features from LSTM | Num LSTM Layers|
 |--------| ------- | -------------- | ------------ | -------------------- | ---------------- | ------------ | ------------- | --------- | ---------------- | ----------- | ----- |
 | 1a | [accuracy](images/exp1/accuracy_1a.pdf)   [loss](images/exp1/loss_1a.pdf)| 707/707=100% | 77/77=100% | 375/404 | same-weather | same-direction | 1e-5 | NO | CELL-STATE | 1 |
 | 2a | [accuracy](images/exp2/accuracy_2a.pdf)   [loss](images/exp2/loss_2a.pdf)| 1011/1011=100% | 111/112=100% | 443/680 | same-weather | same-direction | 1e-5 | NO | CELL-STATE |  1 |
