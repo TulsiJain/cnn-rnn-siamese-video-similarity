@@ -17,17 +17,17 @@
 | Exp #  |  images | train-accuracy | val-accuracy | positive-negative | weather-type in pair of videos | trajectory-type | learning-rate | convNet training | features from LSTM | Num LSTM Layers|
 |--------| ------- | -------------- | ------------ | -------------------- | ---------------- | ------------ | ------------- | --------- | ---------------- | ----------- | ----- |
 | 1a | [accuracy](images/exp1/accuracy_1a.pdf)   [loss](images/exp1/loss_1a.pdf)| 707/707=100% | 77/77=100% | 375/404 | same-weather | same-direction | 1e-5 | NO | CELL-STATE | 1 |
-| 2a | [accuracy](images/exp2/accuracy_2a.pdf)   [loss](images/exp2/loss_2a.pdf)| 1011/1011=100% | 111/112=100% | 443/680 | same-weather | same-direction | 1e-5 | NO | CELL-STATE |  1 |
-| 2b | [accuracy](images/exp2/accuracy_2b.pdf)   [loss](images/exp2/loss_2b.pdf)| 782/1011=77.3% | 83/112=74% | 443/680 | same-weather | same-direction | 1e-5 | NO |  OUTPUT(LAST Frame) | 1 |
-| 2c | [accuracy](images/exp2/accuracy_2c.pdf)   [loss](images/exp2/loss_2c.pdf)| 782/1011=77.3% | 86/112=77% | 443/680 | same-weather | same-direction | 1e-4 | NO |  OUTPUT(LAST Frame) | 1 |
-| 2d | [accuracy](images/exp2/accuracy_2d.pdf)   [loss](images/exp2/loss_2d.pdf)| 733/1011=72.5% | 84/112=75% | 443/680 | same-weather | same-direction | 1e-5 | YES |  OUTPUT(LAST Frame) | 1 |
-| 2e | [accuracy](images/exp2/accuracy_2e.pdf)   [loss](images/exp2/loss_2e.pdf)| 791/1011=78.2% | 93/112=83% | 443/680 | same-weather | same-direction | 1e-5 | YES |  OUTPUT(LAST Frame) | 3 |
+| 2a | [accuracy](images/exp2/accuracy_2a.pdf)   [loss](images/exp2/loss_2a.pdf)| 1011/1011=100% | 111/112=100% | 443/680 | all-weather | same-direction | 1e-5 | NO | CELL-STATE |  1 |
+| 2b | [accuracy](images/exp2/accuracy_2b.pdf)   [loss](images/exp2/loss_2b.pdf)| 782/1011=77.3% | 83/112=74% | 443/680 | all-weather | same-direction | 1e-5 | NO |  OUTPUT(LAST Frame) | 1 |
+| 2c | [accuracy](images/exp2/accuracy_2c.pdf)   [loss](images/exp2/loss_2c.pdf)| 782/1011=77.3% | 86/112=77% | 443/680 | all-weather | same-direction | 1e-4 | NO |  OUTPUT(LAST Frame) | 1 |
+| 2d | [accuracy](images/exp2/accuracy_2d.pdf)   [loss](images/exp2/loss_2d.pdf)| 733/1011=72.5% | 84/112=75% | 443/680 | all-weather | same-direction | 1e-5 | YES |  OUTPUT(LAST Frame) | 1 |
+| 2e | [accuracy](images/exp2/accuracy_2e.pdf)   [loss](images/exp2/loss_2e.pdf)| 791/1011=78.2% | 93/112=83% | 443/680 | all-weather | same-direction | 1e-5 | YES |  OUTPUT(LAST Frame) | 3 |
 | 3a | [accuracy](images/exp3/accuracy_3a.pdf)   [loss](images/exp3/loss_3a.pdf)| 808/813=100% | 89/89=100% | 498/404 | same-weather | same/overlap-directions | 1e-5 | NO | CELL-STATE |  1 |
 | 4a | [accuracy](images/exp4/accuracy_4a.pdf)   [loss](images/exp4/loss_4a.pdf)| 932/937=100% | 101/103=100% | 636/404 | all-weather | same/overlap-directions | 1e-5 | NO | CELL-STATE | 1 |
 | 5a | [accuracy](images/exp5/accuracy_5a.pdf)   [loss](images/exp5/loss_5a.pdf)| 501/501=100% | 55/55=100% | 152/404 | same-weather | inverse-direction | 1e-5 | NO | CELL-STATE | 1 |
-| 6a | [accuracy](images/exp6/accuracy_6a.pdf)   [loss](images/exp6/loss_6a.pdf)| 502/502=100% | 52/55=95% | 153/404 | same-weather | inverse-direction | 1e-5 | NO | CELL-STATE | 1 |
-| 7a | [accuracy](images/exp7/accuracy_7a.pdf)   [loss](images/exp7/loss_7a.pdf)| 612/612=100% | 67/67=100% | 275/404 | same-weather | inverse-direction | 1e-5 | NO | CELL-STATE | 1 |
-| 8a | [accuracy](images/exp8/accuracy_8a.pdf)   [loss](images/exp8/loss_8a.pdf)| 635/635=100% | 70/70=95% | 301/404 | same-weather | inverse/overlap-direction | 1e-5 | NO | CELL-STATE | 1 |
+| 6a | [accuracy](images/exp6/accuracy_6a.pdf)   [loss](images/exp6/loss_6a.pdf)| 502/502=100% | 52/55=95% | 153/404 | all-weather | inverse-direction | 1e-5 | NO | CELL-STATE | 1 |
+| 7a | [accuracy](images/exp7/accuracy_7a.pdf)   [loss](images/exp7/loss_7a.pdf)| 612/612=100% | 67/67=100% | 275/404 | same-weather | inverse/overlap-direction | 1e-5 | NO | CELL-STATE | 1 |
+| 8a | [accuracy](images/exp8/accuracy_8a.pdf)   [loss](images/exp8/loss_8a.pdf)| 635/635=100% | 70/70=95% | 301/404 | all-weather | inverse/overlap-direction | 1e-5 | NO | CELL-STATE | 1 |
 
 
 
