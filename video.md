@@ -25,7 +25,7 @@ Following parameters were fixed
 | 3a | [accuracy](images/exp3/accuracy_3a.pdf)   [loss](images/exp3/loss_3a.pdf)| 808/813=100% | 89/89=100% | 498/404 | same-weather | same/overlap-directions | 1e-5 | NO | CELL-STATE | 1 | 9:1 |
 | 4a | [accuracy](images/exp4/accuracy_4a.pdf)   [loss](images/exp4/loss_4a.pdf)| 932/937=99% | 101/103=98% | 636/404 | all-weather | same/overlap-directions | 1e-5 | NO | CELL-STATE | 1 | 9:1 |
 | 4b | [accuracy](images/exp4/accuracy_4b.pdf)   [loss](images/exp4/loss_4b.pdf)| 520/520=100% | 520/520=100% | 636/404 | all-weather | same/overlap-directions | 1e-5 | NO | CELL-STATE | 1 | 1:1 |
-| 4c | [accuracy](images/exp4/accuracy_4c.pdf)   [loss](images/exp4/loss_4c.pdf)| | | 636/404 | all-weather | same/overlap-directions | 1e-5 | NO | CELL-STATE | 1 | 1:9 |
+| 4c | [accuracy](images/exp4/accuracy_4c.pdf)   [loss](images/exp4/loss_4c.pdf)| 100% | 55% | 636/404 | all-weather | same/overlap-directions | 1e-5 | NO | CELL-STATE | 1 | 1:9 |
 | 4d | [accuracy](images/exp4/accuracy_4d.pdf)   [loss](images/exp4/loss_4d.pdf)| 260/260=100% | 535/780=69% | 636/404 | all-weather | same/overlap-directions | 1e-5 | NO | CELL-STATE | 1 | 1:3 |
 | 4e | [accuracy](images/exp4/accuracy_4e.pdf)   [loss](images/exp4/loss_4e.pdf)| 417/417=100% | 595/623=95%| 636/404 | all-weather | same/overlap-directions | 1e-5 | NO | CELL-STATE | 1 | 3:2 |
 | 4f | [accuracy](images/exp4/accuracy_4f.pdf)   [loss](images/exp4/loss_4f.pdf)| 931/937=99% | 101/103=98% | 636/404 | all-weather | same/overlap-directions | 1e-5 | NO | HIDDEN-STATE | 1 | 9:1 |
@@ -33,9 +33,12 @@ Following parameters were fixed
 | 6a | [accuracy](images/exp6/accuracy_6a.pdf)   [loss](images/exp6/loss_6a.pdf)| 502/502=100% | 52/55=95% | 153/404 | all-weather | inverse-direction | 1e-5 | NO | CELL-STATE | 1 | 9:1 |
 | 7a | [accuracy](images/exp7/accuracy_7a.pdf)   [loss](images/exp7/loss_7a.pdf)| 612/612=100% | 67/67=100% | 275/404 | same-weather | inverse/overlap-direction | 1e-5 | NO | CELL-STATE | 1 | 9:1 |
 | 8a | [accuracy](images/exp8/accuracy_8a.pdf)   [loss](images/exp8/loss_8a.pdf)| 635/635=100% | 70/70=95% | 301/404 | all-weather | inverse/overlap-direction | 1e-5 | NO | CELL-STATE | 1 | 9:1 |
-
-| 9a | [accuracy](images/exp9/accuracy_9a.pdf)   [loss](images/exp9/loss_9a.pdf)|  |  |  | all-weather | all-directions | 1e-5 | NO | CELL-STATE | 1 | 9:1 |
-| 9a | [accuracy](images/exp9/accuracy_9a.pdf)   [loss](images/exp9/loss_9a.pdf)|  |  |  | all-weather | all-directions | 1e-5 | NO | HIDDEN-STATE | 1 | 9:1 |
+| 9a | [accuracy](images/exp9/accuracy_9a.pdf)   [loss](images/exp9/loss_9a.pdf)| 1581/1620 | 180/180=100% | 1120/680 | all-weather | all-directions | 1e-5 | NO | CELL-STATE | 1 | 9:1 |
+| 9b | [accuracy](images/exp9/accuracy_9b.pdf)   [loss](images/exp9/loss_9b.pdf)|  1600/1620=100% |  180/180=100% | 1120/680 | all-weather | all-directions | 1e-5 | NO | HIDDEN-STATE | 1 | 9:1 |
+| 9c | [accuracy](images/exp9/accuracy_9c.pdf)   [loss](images/exp9/loss_9c.pdf)|  900/900=100% |  859/900=95% | 1120/680 | all-weather | all-directions | 1e-5 | NO | HIDDEN-STATE | 1 | 1:1 |
+| 9d | [accuracy](images/exp9/accuracy_9d.pdf)   [loss](images/exp9/loss_9d.pdf)|  450/900=50% |  360/900=40% | 1120/680 | all-weather | all-directions | 1e-5 | NO | OUTPUT(LAST Frame) - LSTM WITH PEEPHOLES | 1 | 1:1 |
+| 9e | [accuracy](images/exp9/accuracy_9e.pdf)   [loss](images/exp9/loss_9e.pdf)|  516/900=58% |  436/900=48% | 1120/680 | all-weather | all-directions | 1e-5 | NO | GRU-Output(Last Frame) | 1 | 1:1 |
+| 9f | [accuracy](images/exp9/accuracy_9f.pdf)   [loss](images/exp9/loss_9f.pdf)|  869/900=99% |  898/900=100% | 1120/680 | all-weather | all-directions | 1e-5 | NO | GRU-Hidden | 1 | 1:1 |
 
 
 
