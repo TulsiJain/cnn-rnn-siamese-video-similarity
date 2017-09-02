@@ -29,6 +29,7 @@ class InputHelper(object):
         for i in range(1, len(line), 1):
             if i < max_document_length:
                 temp.append(base_filepath + mapping_dict[line[0]] + '/' + line[i] + '.png')
+                #temp.append(base_filepath + mapping_dict[line[0]] + '/Image' + line[i].zfill(5) + '.jpg')
         
         #append-black images if the seq length is less than 20
         while len(temp) < max_document_length:
@@ -37,7 +38,7 @@ class InputHelper(object):
         return temp
 
 
-    def getTsvData(self, base_filepath, max_document_length, simplify):
+    def getTsvData(self, base_filepath, max_document_length, positive_file, negative_file,  simplify):
         print("Loading training data from " + base_filepath)
         x1=[]
         x2=[]
@@ -52,14 +53,7 @@ class InputHelper(object):
 
         # Loading Positive sample file
         train_data=[]
-        #with open(base_filepath + 'positive_annotations.txt', 'r') as file1:
-        #with open(base_filepath + 'positive_annotations_day_night_same.txt', 'r') as file1:
-        #with open(base_filepath + 'positive_annotations_day_night_overlap.txt', 'r') as file1:
-        with open(base_filepath + 'positive_annotations_day_night_all.txt', 'r') as file1:
-        #with open(base_filepath + 'positive_annotations_day_day_inverse.txt', 'r') as file1:
-        #with open(base_filepath + 'positive_annotations_day_night_inverse_overlap.txt', 'r') as file1:
-        #with open(base_filepath + 'positive_annotations_day_day_overlap.txt', 'r') as file1:
-        #with open(base_filepath + 'ultra_simple_positive_annotations', 'r') as file1:
+        with open(positive_file, 'r') as file1:
             for row in file1:
                 temprow=row.split('/', 1)[0]
                 temp=temprow.split()
@@ -96,11 +90,7 @@ class InputHelper(object):
 
         # Loading Negative sample file
         l_neg = []
-        #for line in open(base_filepath + 'negative_annotations.txt'):
-        #for line in open(base_filepath + 'negative_annotations_day_night_same.txt'):
-        #for line in open(base_filepath + 'negative_annotations_day_night_overlap.txt'):
-        for line in open(base_filepath + 'negative_annotations_day_night_all.txt'):
-        #for line in open(base_filepath + 'negative_annotations_day_day_overlap.txt'):
+        for line in open(negative_file):
             line=line.split('/', 1)[0]
             if (len(line) > 0  and  line[0] == 'F'):
                 l_neg.append(line.strip())
@@ -108,7 +98,7 @@ class InputHelper(object):
         # negative samples from file
         num_negative_samples = len(l_neg)
         for i in range(0,num_negative_samples,2):
-            #if random() > 0.91:
+            #if random() < 0.02:
             x1.append(self.getfilenames(l_neg[i], base_filepath, mapping_dict, max_document_length))
             x2.append(self.getfilenames(l_neg[i+1], base_filepath, mapping_dict, max_document_length))
             y.append(0)#np.array([0,1]))
@@ -118,33 +108,6 @@ class InputHelper(object):
         l_neg = len(x1) - len(l_pos)//2
         return np.asarray(x1),np.asarray(x2),np.asarray(y), len(l_pos)//2, l_neg, np.asarray(video_lengths)
 
-
-    def getTsvTestData(self, base_filepath, max_document_length):
-        print("Loading training data from " + base_filepath)
-        x1=[]
-        x2=[]
-        y=[]
-        
-        #load all the mapping dictonaries
-        mapping_dict = {}
-        for line_no,line in enumerate(open(base_filepath + 'mapping_file')):
-            mapping_dict['F' + str(line_no+1)] = line.strip()
-
-        # Loading Positive sample file
-        l = []
-        for line in open(base_filepath + 'positive_annotations.txt'):
-            line=line.split('/', 1)[0]
-            if (len(line) > 0  and line[0] == 'F'):
-                l.append(line.strip())
-
-        # positive samples from file
-        num_positive_samples = len(l)
-        for i in range(0, num_positive_samples, 2):
-            x1.append(self.getfilenames(l[i], base_filepath, mapping_dict, max_document_length))
-            x2.append(self.getfilenames(l[i+1], base_filepath, mapping_dict, max_document_length))
-            y.append(1)
-
-        return np.asarray(x1),np.asarray(x2),np.asarray(y)  
  
     def batch_iter(self, x1, x2, y, video_lengths, batch_size, num_epochs, conv_model_spec, shuffle=True, is_train=True):
         """
@@ -170,7 +133,6 @@ class InputHelper(object):
             for batch_num in range(num_batches_per_epoch):
                 start_index = batch_num * batch_size
                 end_index = min((batch_num + 1) * batch_size, data_size)
-                #print(y_shuffled[start_index:end_index])
 
                 processed_imgs = self.load_preprocess_images(x1_shuffled[start_index:end_index], x2_shuffled[start_index:end_index], conv_model_spec, epoch ,is_train)
                 yield( processed_imgs[0], processed_imgs[1]  , y_shuffled[start_index:end_index], video_lengths_shuffled[start_index:end_index])
@@ -217,11 +179,11 @@ class InputHelper(object):
     # Data Preparatopn
     # ==================================================
     
-    def getDataSets(self, training_paths, max_document_length, percent_dev, batch_size):
+    def getDataSets(self, training_paths, max_document_length, percent_dev, positive_file, negative_file, batch_size):
         simplify='same' #'inverse','none'
         self.apply_image_augmentations()
         self.data_augmentations()
-        x1, x2, y, num_pos, num_neg, video_lengths =self.getTsvData(training_paths, max_document_length, simplify)
+        x1, x2, y, num_pos, num_neg, video_lengths =self.getTsvData(training_paths, max_document_length, positive_file, negative_file, simplify)
         num_total = num_pos + num_neg
         print(num_pos, num_neg)
 
@@ -267,11 +229,6 @@ class InputHelper(object):
         return train_set,dev_set,sum_no_of_batches
     
 
-    def getTestDataSet(self, data_path, max_document_length):
-        self.apply_image_augmentations()
-        x1,x2,y = self.getTsvTestData(data_path, max_document_length)
-        gc.collect()
-        return x1,x2, y
 
     def apply_image_augmentations(self):
         sometimes = lambda aug: iaa.Sometimes(0.33, aug)

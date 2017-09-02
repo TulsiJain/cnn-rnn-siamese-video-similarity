@@ -28,8 +28,8 @@ class InputHelper(object):
         # Store paths of all images in the sequence
         for i in range(1, len(line), 1):
             if i < max_document_length:
-                temp.append(base_filepath + mapping_dict[line[0]] + '/Image' + line[i].zfill(5) + '.jpg')
-                #temp.append(base_filepath + mapping_dict[line[0]] + '/' + line[i] + '.png')
+                #temp.append(base_filepath + mapping_dict[line[0]] + '/Image' + line[i].zfill(5) + '.jpg')
+                temp.append(base_filepath + mapping_dict[line[0]] + '/' + line[i] + '.png')
         
         #append-black images if the seq length is less than 20
         while len(temp) < max_document_length:
@@ -38,7 +38,7 @@ class InputHelper(object):
         return temp
 
 
-    def getTsvTestData(self, base_filepath, max_document_length):
+    def getTsvTestData(self, base_filepath, max_document_length, filename, label):
         print("Loading training data from " + base_filepath)
         x1=[]
         x2=[]
@@ -53,47 +53,21 @@ class InputHelper(object):
 
         # Loading Positive sample file
         train_data=[]
-        """with open(base_filepath + 'alderly_positives.txt', 'r') as file1:
-            for row in file1:
-                temprow=row.split('/', 1)[0]
-                temp=temprow.split()
-
-                if(len(temp)>0 and temp[0][0]!='/'):
-                    train_data.append(temp)
-        assert(len(train_data)%7==0)
-
-        l_pos = []
         
-
-        for exampleIter in range(0,len(train_data),7):
-            l_pos.append(' '.join(train_data[exampleIter+1]))
-            l_pos.append(' '.join(train_data[exampleIter+2]))
-
-
-        # positive samples from file
-        num_positive_samples = len(l_pos)
-        for i in range(0,num_positive_samples,2):
-            x1.append(self.getfilenames(l_pos[i], base_filepath, mapping_dict, max_document_length))
-            x2.append(self.getfilenames(l_pos[i+1], base_filepath, mapping_dict, max_document_length))
-            y.append(0)#np.array([0,1]))
-            temp_length = len(l_pos[i].strip().split(" "))
-            video_lengths.append(max_document_length if temp_length > max_document_length else temp_length)"""
-        
-        # Loading Negative sample file
         l_neg = []
-        for line in open(base_filepath + 'alderly_negatives.txt'):
+        for line in open(filename):
             line=line.split('/', 1)[0]
             if (len(line) > 0  and  line[0] == 'F'):
-                if random() < 0.2:    
-                    l_neg.append(line.strip())
+                l_neg.append(line.strip())
         
         # negative samples from file
         num_negative_samples = len(l_neg)
         for i in range(0,num_negative_samples,2):
+            #if random() < 0.2:
             print(num_negative_samples, i)
             x1.append(self.getfilenames(l_neg[i], base_filepath, mapping_dict, max_document_length))
             x2.append(self.getfilenames(l_neg[i+1], base_filepath, mapping_dict, max_document_length))
-            y.append(0)#np.array([0,1]))
+            y.append(label)#np.array([0,1]))
             temp_length = len(l_neg[i].strip().split(" "))
             video_lengths.append(max_document_length if temp_length > max_document_length else temp_length)
 
@@ -158,8 +132,8 @@ class InputHelper(object):
     
 
     # Data Preparatopn
-    def getTestDataSet(self, data_path, max_document_length):
-        x1,x2,y,video_lengths = self.getTsvTestData(data_path, max_document_length)
+    def getTestDataSet(self, data_path, max_document_length, filename, label):
+        x1,x2,y,video_lengths = self.getTsvTestData(data_path, max_document_length, filename, label)
         gc.collect()
         return x1,x2, y,video_lengths
 

@@ -12,12 +12,22 @@ from scipy import misc
 # ==================================================
 
 # Eval Parameters
-tf.flags.DEFINE_integer("batch_size", 4, "Batch Size (default: 4)")
+tf.flags.DEFINE_integer("batch_size", 1, "Batch Size (default: 1)")
 tf.flags.DEFINE_string("checkpoint_dir", "", "Checkpoint directory from training run")
-tf.flags.DEFINE_string("model", "/data4/abhijeet/gta/runs/1504128060/checkpoints/model-675", "Load trained model checkpoint (Default: None)")
+#tf.flags.DEFINE_string("model", "/data4/abhijeet/gta/runs/1504276069/checkpoints/model-3542", "Load trained model checkpoint (Default: None)")
+#tf.flags.DEFINE_string("model", "/data4/abhijeet/gta/runs/1504326119/checkpoints/model-3289", "Load trained model checkpoint (Default: None)")
+# Intersection only (test only negative)
+tf.flags.DEFINE_string("model", "/data4/abhijeet/gta/runs/1504356159/checkpoints/model-1895", "Load trained model checkpoint (Default: None)")
+
+#Alderly
+#tf.flags.DEFINE_string("model", "/data4/abhijeet/gta/runs/1504139288/checkpoints/model-189", "Load trained model checkpoint (Default: None)")
 tf.flags.DEFINE_string("eval_filepath", "/data4/abhijeet/gta/final/", "testing folder (default: /home/halwai/gta/final)")
 tf.flags.DEFINE_integer("max_frames", 20, "Maximum Number of frame (default: 20)")
 tf.flags.DEFINE_string("loss", "contrastive", "Type of Loss functions:: contrastive/AAAI(default: contrastive)")
+tf.flags.DEFINE_string("name", "result", "Name of the folder where images with incorrect results are stored")
+
+tf.flags.DEFINE_string("filename", "positive_annotations_test_all_intersections_only.txt", "Name of the file to be tested upon")
+tf.flags.DEFINE_integer("label", 0, "Label of the files (default: 0)")
 
 # Misc Parameters
 tf.flags.DEFINE_boolean("allow_soft_placement", True, "Allow device soft device placement")
@@ -77,9 +87,9 @@ with graph.as_default():
         # Collect the predictions here
         all_predictions = []
         all_dist=[]
+        num = 0
         for (x1_dev_b,x2_dev_b,y_dev_b,v_len_b) in batches:
-            misc.imsave('temp.png', np.vstack([np.hstack(x1_dev_b),np.hstack(x2_dev_b)]))
-            #print(x1_dev_b)
+            num = num+1
             [x1] = sess.run([conv_output], {input_imgs: x1_dev_b})
             [x2] = sess.run([conv_output], {input_imgs: x2_dev_b})
             [dist] = sess.run([predictions], {input_x1: x1, input_x2: x2, input_y:y_dev_b, dropout_keep_prob: 1.0, video_lengths: v_len_b})
@@ -88,7 +98,10 @@ with graph.as_default():
             print(dist, y_dev_b, d)
             all_dist.append(dist)
             all_predictions.append(correct)
-            
+            #if ~correct:
+            #misc.imsave(FLAGS.name + '/'+ FLAGS.filename + '/' + str(num)+'.png', np.vstack([np.hstack(x1_dev_b),np.hstack(x2_dev_b)]))
+                
+        
         #for ex in all_predictions:
         #    print(ex) 
         correct_predictions = np.sum(all_predictions)*1.0/ len(all_predictions)

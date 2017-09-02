@@ -25,7 +25,7 @@ tf.flags.DEFINE_string("name", "result", "prefix names of the output files(defau
 
 # Training parameters
 tf.flags.DEFINE_integer("batch_size", 4, "Batch Size (default: 10)")
-tf.flags.DEFINE_integer("num_epochs", 10, "Number of training epochs (default: 200)")
+tf.flags.DEFINE_integer("num_epochs", 15, "Number of training epochs (default: 200)")
 tf.flags.DEFINE_integer("checkpoint_every", 1, "Save model after this many epochs (default: 100)")
 tf.flags.DEFINE_integer("num_lstm_layers", 1, "Number of LSTM layers(default: 1)")
 tf.flags.DEFINE_integer("hidden_dim", 50, "Number of LSTM layers(default: 2)")
@@ -33,16 +33,19 @@ tf.flags.DEFINE_string("loss", "contrastive", "Type of Loss functions:: contrast
 tf.flags.DEFINE_boolean("projection", False, "Project Conv Layers Output to a Lower Dimensional Embedding (Default: True)")
 tf.flags.DEFINE_boolean("conv_net_training", False, "Training ConvNet (Default: False)")
 tf.flags.DEFINE_float("lr", 0.00001, "learning-rate(default: 0.00001)")
+tf.flags.DEFINE_integer("train_val_ratio", 10, "learning-rate(default:10%)")
 
 # Misc Parameters
 tf.flags.DEFINE_boolean("allow_soft_placement", False, "Allow device soft device placement")
 tf.flags.DEFINE_boolean("log_device_placement", False, "Log placement of ops on devices")
-tf.flags.DEFINE_integer("return_outputs", 2, "Outpust from LSTM, 0=>Last LSMT output, 2=> Cell-State Output. 1=> Hidden-State Output (default: 2)")
+tf.flags.DEFINE_integer("return_outputs", 1, "Outpust from LSTM, 0=>Last LSMT output, 2=> Cell-State Output. 1=> Hidden-State Output (default: 1)")
 tf.flags.DEFINE_string("summaries_dir", "/data4/abhijeet/gta/summaries/", "Summary storage")
 
 #Conv Net Parameters
 tf.flags.DEFINE_string("conv_layer", "pool6", "CNN features from AMOSNet(default: pool6)")
 tf.flags.DEFINE_string("conv_layer_weight_pretrained_path", "/data4/abhijeet/gta/AmosNetWeights.npy", "AMOSNet pre-trained weights path")
+tf.flags.DEFINE_string("train_file_positive", "./annotation_files/positive_annotations_all_intersections_only.txt", "Positive_training_file")
+tf.flags.DEFINE_string("train_file_negative", "./annotation_files/negative_annotations_all_intersections_only.txt", "Negative_training_file")
 
 
 FLAGS = tf.flags.FLAGS
@@ -57,7 +60,7 @@ if FLAGS.training_file_path==None:
     exit()
 
 inpH = InputHelper()
-train_set, dev_set, sum_no_of_batches = inpH.getDataSets(FLAGS.training_file_path, FLAGS.max_frames, 50, FLAGS.batch_size)
+train_set, dev_set, sum_no_of_batches = inpH.getDataSets(FLAGS.training_file_path, FLAGS.max_frames, FLAGS.train_val_ratio, FLAGS.train_file_positive, FLAGS.train_file_negative, FLAGS.batch_size)
 
 # Training
 # ==================================================
@@ -114,7 +117,7 @@ with tf.Graph().as_default():
     print("defined gradient summaries")
     # Output directory for models and summaries
     timestamp = str(int(time.time()))
-    out_dir = os.path.abspath(os.path.join("/data4/abhijeet/gta/", "runs", timestamp))
+    out_dir = os.path.abspath(os.path.join("/data4/abhijeet/gta/", "runs", FLAGS.name))
     print("Writing to {}\n".format(out_dir))
 
     # Checkpoint directory. Tensorflow assumes this directory already exists so we need to create it
@@ -190,7 +193,6 @@ with tf.Graph().as_default():
                          siameseModel.input_y: y_batch,
                          siameseModel.dropout_keep_prob: FLAGS.dropout_keep_prob,
                          siameseModel.video_lengths: video_lengths,
-
         }
        
         step, loss, dist, summary, out1, out2 = sess.run([global_step, siameseModel.loss, siameseModel.distance, summaries_merged,siameseModel.out1,siameseModel.out2],  feed_dict)
