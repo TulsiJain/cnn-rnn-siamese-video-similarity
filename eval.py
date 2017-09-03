@@ -17,7 +17,8 @@ tf.flags.DEFINE_string("checkpoint_dir", "", "Checkpoint directory from training
 #tf.flags.DEFINE_string("model", "/data4/abhijeet/gta/runs/1504276069/checkpoints/model-3542", "Load trained model checkpoint (Default: None)")
 #tf.flags.DEFINE_string("model", "/data4/abhijeet/gta/runs/1504326119/checkpoints/model-3289", "Load trained model checkpoint (Default: None)")
 # Intersection only (test only negative)
-tf.flags.DEFINE_string("model", "/data4/abhijeet/gta/runs/1504356159/checkpoints/model-1895", "Load trained model checkpoint (Default: None)")
+#tf.flags.DEFINE_string("model", "/data4/abhijeet/gta/runs/1504356159/checkpoints/model-1895", "Load trained model checkpoint (Default: None)")
+tf.flags.DEFINE_string("model", "/data4/abhijeet/gta/runs/14a/checkpoints/model-4932", "Load trained model checkpoint (Default: None)")
 
 #Alderly
 #tf.flags.DEFINE_string("model", "/data4/abhijeet/gta/runs/1504139288/checkpoints/model-189", "Load trained model checkpoint (Default: None)")
@@ -26,7 +27,7 @@ tf.flags.DEFINE_integer("max_frames", 20, "Maximum Number of frame (default: 20)
 tf.flags.DEFINE_string("loss", "contrastive", "Type of Loss functions:: contrastive/AAAI(default: contrastive)")
 tf.flags.DEFINE_string("name", "result", "Name of the folder where images with incorrect results are stored")
 
-tf.flags.DEFINE_string("filename", "positive_annotations_test_all_intersections_only.txt", "Name of the file to be tested upon")
+tf.flags.DEFINE_string("filename", "./annotation_files/negative_annotations_test_all_intersections_only.txt", "Name of the file to be tested upon")
 tf.flags.DEFINE_integer("label", 0, "Label of the files (default: 0)")
 
 # Misc Parameters
@@ -47,7 +48,7 @@ if FLAGS.eval_filepath==None or FLAGS.model==None :
 
 # load data and map id-transform based on training time vocabulary
 inpH = InputHelper()
-x1_test,x2_test,y_test,video_lengths_test = inpH.getTestDataSet(FLAGS.eval_filepath, FLAGS.max_frames)
+x1_test,x2_test,y_test,video_lengths_test = inpH.getTestDataSet(FLAGS.eval_filepath, FLAGS.max_frames, FLAGS.filename, FLAGS.label)
 
 print("\nEvaluating...\n")
 
@@ -105,5 +106,6 @@ with graph.as_default():
         #for ex in all_predictions:
         #    print(ex) 
         correct_predictions = np.sum(all_predictions)*1.0/ len(all_predictions)
+        print(len(all_predictions), np.sum(all_predictions))
         print("Accuracy: {:g}".format(correct_predictions))
 

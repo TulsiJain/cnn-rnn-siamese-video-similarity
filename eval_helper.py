@@ -64,7 +64,7 @@ class InputHelper(object):
         num_negative_samples = len(l_neg)
         for i in range(0,num_negative_samples,2):
             #if random() < 0.2:
-            print(num_negative_samples, i)
+            #print(num_negative_samples, i)
             x1.append(self.getfilenames(l_neg[i], base_filepath, mapping_dict, max_document_length))
             x2.append(self.getfilenames(l_neg[i+1], base_filepath, mapping_dict, max_document_length))
             y.append(label)#np.array([0,1]))
