@@ -194,7 +194,16 @@ class InputHelper(object):
         # take positive and negative samples in equal ratios
         dev_idx = [i for i in range(num_pos-1, num_pos-1-num_pos*percent_dev//100, -1 )] + [i for i in range(num_total-1, num_total-1-num_neg*percent_dev//100, -1 )] 
         train_idx = [i for i in range(0, num_pos-num_pos*percent_dev//100, 1 )] + [i for i in range(num_pos, num_total-num_neg*percent_dev//100, 1 )] 
-        # Split train/test set
+        
+        # Randomly shuffle data
+        np.random.seed(131)
+        shuffle_indices = np.random.permutation(np.arange(len(y)))
+        x1 = x1[shuffle_indices]
+        x2 = x2[shuffle_indices]
+        y = y[shuffle_indices]
+        video_lengths = video_lengths[shuffle_indices]
+        
+        # Split train/val set
         # TODO: This is very crude, should use cross-validation
         x1_train_ordered, x1_dev_ordered = np.asarray([x1[i] for i in train_idx]), np.asarray([x1[i] for i in dev_idx]) 
         x2_train_ordered, x2_dev_ordered = np.asarray([x2[i] for i in train_idx]), np.asarray([x2[i] for i in dev_idx])
@@ -202,13 +211,6 @@ class InputHelper(object):
         video_lengths_train_ordered, video_lengths_dev_ordered = np.asarray([video_lengths[i] for i in train_idx]), np.asarray([video_lengths[i] for i in dev_idx])
         print("Train/Dev split for {}: {:d}/{:d}".format(training_paths, len(y_train_ordered), len(y_dev_ordered)))
      
-        # Randomly shuffle data
-        #np.random.seed(131)
-        #shuffle_indices = np.random.permutation(np.arange(len(y_train_ordered)))
-        #x1_train = x1_train_ordered[shuffle_indices]
-        #x2_train = x2_train_ordered[shuffle_indices]
-        #y_train = y_train_ordered[shuffle_indices]
-        #video_lengths_train = video_lengths_train_ordered[shuffle_indices]
 
         # Randomly shuffle data
         #np.random.seed(131)
