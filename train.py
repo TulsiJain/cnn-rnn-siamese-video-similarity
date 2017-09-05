@@ -18,7 +18,7 @@ from amos import Conv
 
 tf.flags.DEFINE_integer("embedding_dim", 1000, "Dimensionality of character embedding (default: 300)")
 tf.flags.DEFINE_float("dropout_keep_prob", 0.5, "Dropout keep probability (default: 0.5)")
-tf.flags.DEFINE_float("l2_reg_lambda", 0.0, "L2 regularizaion lambda (default: 0.0)")
+tf.flags.DEFINE_float("l2_reg_lambda", 0.01, "L2 regularizaion lambda (default: 0.01)")
 tf.flags.DEFINE_string("training_file_path", "/data4/abhijeet/gta/final/", "training folder (default: /home/halwai/gta_data/final)")
 tf.flags.DEFINE_integer("max_frames", 20, "Maximum Number of frame (default: 20)")
 tf.flags.DEFINE_string("name", "result", "prefix names of the output files(default: result)")
@@ -101,7 +101,10 @@ with tf.Graph().as_default():
         optimizer = tf.train.AdamOptimizer(FLAGS.lr)
         print("initialized convmodel and siamesemodel object")
     
-    grads_and_vars=optimizer.compute_gradients(siameseModel.loss)
+    tv = tf.trainable_variables()
+    regularization_cost = tf.reduce_sum([ tf.nn.l2_loss(v) for v in tv ])
+    
+    grads_and_vars=optimizer.compute_gradients(siameseModel.loss + FLAGS.l2_reg_lambda*regularization_cost)
     tr_op_set = optimizer.apply_gradients(grads_and_vars, global_step=global_step)
     print("defined training_ops")
     # keep track of gradient values and sparsity (optional)
