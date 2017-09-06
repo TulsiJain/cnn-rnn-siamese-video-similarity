@@ -30,10 +30,10 @@ class InputHelper(object):
             if i < max_document_length:
                 #temp.append(base_filepath + mapping_dict[line[0]] + '/Image' + line[i].zfill(5) + '.jpg')
                 temp.append(base_filepath + mapping_dict[line[0]] + '/' + line[i] + '.png')
-        
+
         #append-black images if the seq length is less than 20
         while len(temp) < max_document_length:
-            temp.append(base_filepath + 'black_image.jpg')
+            temp.append(base_filepath + 'black_image.png')
 
         return temp
 
@@ -53,13 +53,13 @@ class InputHelper(object):
 
         # Loading Positive sample file
         train_data=[]
-        
+
         l_neg = []
         for line in open(filename):
             line=line.split('/', 1)[0]
             if (len(line) > 0  and  line[0] == 'F'):
                 l_neg.append(line.strip())
-        
+
         # negative samples from file
         num_negative_samples = len(l_neg)
         for i in range(0,num_negative_samples,2):
@@ -102,8 +102,8 @@ class InputHelper(object):
 
                 processed_imgs = self.load_preprocess_images(x1_shuffled[start_index:end_index], x2_shuffled[start_index:end_index], conv_model_spec, epoch ,is_train)
                 yield( processed_imgs[0], processed_imgs[1], y_shuffled[start_index:end_index], video_lengths_shuffled[start_index:end_index])
-    
-    
+
+
     def normalize_input(self, img, conv_model_spec):
         img = img.astype(dtype=np.float32)
         img = img[:, :, [2, 1, 0]] # swap channel from RGB to BGR
@@ -126,10 +126,10 @@ class InputHelper(object):
                 img_normalized = self.normalize_input(img_resized, conv_model_spec)
                 batch2_seq.append(img_normalized)
 
-   
+
         temp =  [np.asarray(batch1_seq), np.asarray(batch2_seq)]
         return temp
-    
+
 
     # Data Preparatopn
     def getTestDataSet(self, data_path, max_document_length, filename, label):
@@ -156,7 +156,7 @@ def compute_distance(distance, loss):
         d[distance>=0.5]=1
         d[distance<0.5]=0
     elif loss == "contrastive":
-        d[distance>0.5]=0 
+        d[distance>0.5]=0
         d[distance<=0.5]=1
     else:
         raise ValueError("Unkown loss function {%s}".format(loss))

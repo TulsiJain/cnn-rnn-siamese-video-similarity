@@ -30,10 +30,10 @@ class InputHelper(object):
             if i < max_document_length:
                 temp.append(base_filepath + mapping_dict[line[0]] + '/' + line[i] + '.png')
                 #temp.append(base_filepath + mapping_dict[line[0]] + '/Image' + line[i].zfill(5) + '.jpg')
-        
+
         #append-black images if the seq length is less than 20
         while len(temp) < max_document_length:
-            temp.append(base_filepath + 'black_image.jpg')
+            temp.append(base_filepath + 'black_image.png')
 
         return temp
 
@@ -65,7 +65,7 @@ class InputHelper(object):
         l_pos = []
         #tags_simplify=['overlap','same']
         tags_simplify=['same']
-        
+
         #simplify can only be: 'inverse','same','none'
         values_simplify=['inverse','same','none']
         assert(simplify in values_simplify)
@@ -94,7 +94,7 @@ class InputHelper(object):
             line=line.split('/', 1)[0]
             if (len(line) > 0  and  line[0] == 'F'):
                 l_neg.append(line.strip())
-        
+
         # negative samples from file
         num_negative_samples = len(l_neg)
         for i in range(0,num_negative_samples,2):
@@ -108,7 +108,7 @@ class InputHelper(object):
         l_neg = len(x1) - len(l_pos)//2
         return np.asarray(x1),np.asarray(x2),np.asarray(y), len(l_pos)//2, l_neg, np.asarray(video_lengths)
 
- 
+
     def batch_iter(self, x1, x2, y, video_lengths, batch_size, num_epochs, conv_model_spec, shuffle=True, is_train=True):
         """
         Generates a batch iterator for a dataset.
@@ -136,8 +136,8 @@ class InputHelper(object):
 
                 processed_imgs = self.load_preprocess_images(x1_shuffled[start_index:end_index], x2_shuffled[start_index:end_index], conv_model_spec, epoch ,is_train)
                 yield( processed_imgs[0], processed_imgs[1]  , y_shuffled[start_index:end_index], video_lengths_shuffled[start_index:end_index])
-    
-    
+
+
     def normalize_input(self, img, conv_model_spec):
         img = img.astype(dtype=np.float32)
         img = img[:, :, [2, 1, 0]] # swap channel from RGB to BGR
@@ -149,7 +149,7 @@ class InputHelper(object):
         batch1_seq, batch2_seq = [], []
         for side1_img_paths, side2_img_paths in zip(side1_paths, side2_paths):
             seq_det1 = self.seq_det[epoch%5] # call this for each batch again, NOT only once at the start
-            seq_det2 = self.seq_det[epoch%5] 
+            seq_det2 = self.seq_det[epoch%5]
 
             for side1_img_path,side2_img_path in zip(side1_img_paths, side2_img_paths):
                 img_org = misc.imread(side1_img_path)
@@ -158,7 +158,7 @@ class InputHelper(object):
                 if is_train==True:
                     img_aug = seq_det1.augment_images(np.expand_dims(img_normalized,axis=0))
                     batch1_seq.append(img_aug[0])
-                else: 
+                else:
                     batch1_seq.append(img_normalized)
 
                 img_org = misc.imread(side2_img_path)
@@ -171,15 +171,15 @@ class InputHelper(object):
                     batch2_seq.append(img_normalized)
 
         #misc.imsave('temp1.png', np.vstack([np.hstack(batch1_seq),np.hstack(batch2_seq)]))
-   
+
         temp =  [np.asarray(batch1_seq), np.asarray(batch2_seq)]
         return temp
-    
+
 
     # Data Preparatopn
     # ==================================================
-    
-    def getDataSets(self, training_paths, max_document_length, percent_dev, positive_file, negative_file, batch_size):
+
+    def getDataSets(self, training_paths, max_document_length, percent_dev_pos, percent_dev_neg, positive_file, negative_file, batch_size):
         simplify='same' #'inverse','none'
         self.apply_image_augmentations()
         self.data_augmentations()
@@ -192,25 +192,25 @@ class InputHelper(object):
         dev_set=[]
 
         # take positive and negative samples in equal ratios
-        dev_idx = [i for i in range(num_pos-1, num_pos-1-num_pos*percent_dev//100, -1 )] + [i for i in range(num_total-1, num_total-1-num_neg*percent_dev//100, -1 )] 
-        train_idx = [i for i in range(0, num_pos-num_pos*percent_dev//100, 1 )] + [i for i in range(num_pos, num_total-num_neg*percent_dev//100, 1 )] 
-        
+        dev_idx = [i for i in range(num_pos-1, num_pos-1-num_pos*percent_dev_pos//100, -1 )] + [i for i in range(num_total-1, num_total-1-num_neg*percent_dev_neg//100, -1 )]
+        train_idx = [i for i in range(0, num_pos-num_pos*percent_dev_pos//100, 1 )] + [i for i in range(num_pos, num_total-num_neg*percent_dev_neg//100, 1 )]
+
         # Randomly shuffle data
-        np.random.seed(131)
-        shuffle_indices = np.random.permutation(np.arange(len(y)))
-        x1 = x1[shuffle_indices]
-        x2 = x2[shuffle_indices]
-        y = y[shuffle_indices]
-        video_lengths = video_lengths[shuffle_indices]
-        
+        #np.random.seed(131)
+        #shuffle_indices = np.random.permutation(np.arange(len(y)))
+        #x1 = x1[shuffle_indices]
+        #x2 = x2[shuffle_indices]
+        #y = y[shuffle_indices]
+        #video_lengths = video_lengths[shuffle_indices]
+
         # Split train/val set
         # TODO: This is very crude, should use cross-validation
-        x1_train_ordered, x1_dev_ordered = np.asarray([x1[i] for i in train_idx]), np.asarray([x1[i] for i in dev_idx]) 
+        x1_train_ordered, x1_dev_ordered = np.asarray([x1[i] for i in train_idx]), np.asarray([x1[i] for i in dev_idx])
         x2_train_ordered, x2_dev_ordered = np.asarray([x2[i] for i in train_idx]), np.asarray([x2[i] for i in dev_idx])
-        y_train_ordered, y_dev_ordered = np.asarray([y[i] for i in train_idx]), np.asarray([y[i] for i in dev_idx]) 
+        y_train_ordered, y_dev_ordered = np.asarray([y[i] for i in train_idx]), np.asarray([y[i] for i in dev_idx])
         video_lengths_train_ordered, video_lengths_dev_ordered = np.asarray([video_lengths[i] for i in train_idx]), np.asarray([video_lengths[i] for i in dev_idx])
         print("Train/Dev split for {}: {:d}/{:d}".format(training_paths, len(y_train_ordered), len(y_dev_ordered)))
-     
+
 
         # Randomly shuffle data
         #np.random.seed(131)
@@ -227,9 +227,9 @@ class InputHelper(object):
         train_set=(x1_train_ordered,x2_train_ordered,y_train_ordered, video_lengths_train_ordered)
         dev_set=(x1_dev_ordered,x2_dev_ordered,y_dev_ordered, video_lengths_dev_ordered)
         gc.collect()
-        
+
         return train_set,dev_set,sum_no_of_batches
-    
+
 
 
     def apply_image_augmentations(self):
@@ -303,7 +303,7 @@ def compute_distance(distance, loss):
         d[distance>=0.5]=1
         d[distance<0.5]=0
     elif loss == "contrastive":
-        d[distance>0.5]=0 
+        d[distance>0.5]=0
         d[distance<=0.5]=1
     else:
         raise ValueError("Unkown loss function {%s}".format(loss))

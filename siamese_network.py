@@ -33,7 +33,7 @@ class SiameseLSTM(object):
         n_hidden=hidden_unit_dim
         #num-layers of lstm n_layers=2 => input(t)-> lstm(1)->lstm(2)->output(t)
         n_layers=num_lstm_layers
-        
+
         # Prepare data shape to match `bidirectional_rnn` function requirements
         # Current data input shape: (batch_size, n_steps, n_input) (?, seq_len, embedding_size)
         # Required shape: 'n_steps' tensors list of shape (batch_size, n_input)
@@ -61,7 +61,7 @@ class SiameseLSTM(object):
                 lstm_bw_cell = tf.contrib.rnn.DropoutWrapper(bw_cell,output_keep_prob=dropout)
                 stacked_rnn_bw.append(lstm_bw_cell)
             lstm_bw_cell_m = tf.contrib.rnn.MultiRNNCell(cells=stacked_rnn_bw, state_is_tuple=True)
-        
+
         # Get lstm cell output
         with tf.name_scope("bw"+scope),tf.variable_scope("bw"+scope):
             #outputs, _, _ = tf.contrib.rnn.static_bidirectional_rnn(lstm_fw_cell_m, lstm_bw_cell_m, x, dtype=tf.float32)
@@ -83,7 +83,7 @@ class SiameseLSTM(object):
             return tf.concat([state_fw[0].c,state_bw[0].c], axis=1)
         else:
             raise ValueError('requested value of return_outputs missing')
-    
+
     def contrastive_loss(self, y,d,batch_size):
         tmp= y *tf.square(d)
         tmp2 = (1-y) *tf.square(tf.maximum((1 - d),0))
@@ -99,7 +99,7 @@ class SiameseLSTM(object):
         else:
             return tf.nn.bias_add(tf.matmul(input, filt), bias)
 
-    
+
     def __init__(
       self, sequence_length, input_size, embedding_size, l2_reg_lambda, batch_size, num_lstm_layers, hidden_unit_dim, loss, projection, return_outputs):
 
@@ -117,12 +117,12 @@ class SiameseLSTM(object):
       if projection:
         with tf.name_scope("projection"):
           self.projection_weights = tf.get_variable("projection", shape=[input_size, embedding_size], initializer=tf.contrib.layers.xavier_initializer())
-          self.embedding1 = tf.matmul(self.input_x1, self.projection_weights) 
+          self.embedding1 = tf.matmul(self.input_x1, self.projection_weights)
           self.embedding2 = tf.matmul(self.input_x2, self.projection_weights)
       else:
         with tf.name_scope("projection"):
           embedding_size = input_size
-          self.embedding1 = self.input_x1 
+          self.embedding1 = self.input_x1
           self.embedding2 = self.input_x2
 
       self.embedding1 = tf.reshape(self.embedding1, tf.convert_to_tensor([-1, sequence_length, embedding_size]))
