@@ -89,15 +89,16 @@ class SiameseLSTM(object):
         tmp2 = (1-y) *tf.square(tf.maximum((1 - d),0))
         return tf.reduce_sum(tmp +tmp2)/batch_size/2
 
-    def fc(self, input, in_channels, out_channels, name, relu):
-        input = tf.reshape(input , [-1, in_channels])
-        with tf.variable_scope(name) as scope:
-            filt = tf.get_variable('weights', shape=[in_channels , out_channels], trainable=False)
-            bias = tf.get_variable('biases',  shape=[out_channels], trainable=False)
-        if relu:
-            return tf.nn.relu(tf.nn.bias_add(tf.matmul(input, filt), bias))
-        else:
-            return tf.nn.bias_add(tf.matmul(input, filt), bias)
+    def fc(self, input_, in_channels, out_channels, name, relu):
+      input_ = tf.reshape(input_ , [-1, in_channels])
+      with tf.variable_scope(name) as scope:
+        filt = tf.get_variable('weights', shape=[in_channels , out_channels], trainable=True)
+        bias = tf.get_variable('biases',  shape=[out_channels], trainable=True)
+      if relu:
+        return tf.nn.relu(tf.nn.bias_add(tf.matmul(input_, filt), bias))
+      else:
+        return tf.nn.bias_add(tf.matmul(input_, filt), bias)
+
 
 
     def __init__(
@@ -107,6 +108,7 @@ class SiameseLSTM(object):
       self.input_x1 = tf.placeholder(tf.float32, [None, input_size], name="input_x1")
       self.input_x2 = tf.placeholder(tf.float32, [None, input_size], name="input_x2")
       self.input_y = tf.placeholder(tf.float32, [None], name="input_y")
+      self.input_y_classification = tf.placeholder(tf.float32, [None, 3], name="input_y_classification")
       self.video_lengths = tf.placeholder(tf.int32, [None], name="video_lengths")
       self.dropout_keep_prob = tf.placeholder(tf.float32, name="dropout_keep_prob")
 
@@ -136,7 +138,6 @@ class SiameseLSTM(object):
 
       # define distance and loss functions
       epsilon = tf.constant(1e-30)
-
       if loss == "AAAI":
         with tf.name_scope("output"):
           self.distance = tf.reduce_sum(tf.abs(tf.subtract(self.out1,self.out2)),1,keep_dims=True)
@@ -146,12 +147,20 @@ class SiameseLSTM(object):
           self.loss = tf.losses.mean_squared_error(self.input_y, self.distance)/batch_size
       elif loss == "contrastive":
         #with tf.name_scope("output"):
-        self.distance = tf.sqrt(epsilon+ tf.reduce_sum(tf.square(tf.subtract(self.out1,self.out2)),1,keep_dims=True))
+        self.distance = tf.sqrt(epsilon + tf.reduce_sum(tf.square(tf.subtract(self.out1,self.out2)),1,keep_dims=True))
         self.distance = tf.div(self.distance, tf.add(tf.sqrt(tf.reduce_sum(tf.square(self.out1),1,keep_dims=True)),tf.sqrt(tf.reduce_sum(tf.square(self.out2),1,keep_dims=True))))
         self.distance = tf.reshape(self.distance, [-1], name="distance")
         print(self.distance)
         with tf.name_scope("loss"):
-          self.loss = self.contrastive_loss(self.input_y, self.distance, batch_size)
+          self.distance_loss = self.contrastive_loss(self.input_y, self.distance, batch_size)
+        #fc-layers and classification loss
+        with tf.name_scope("fc_output"):
+          self.fc1 = self.fc(self.distance, hidden_unit_dim, 20, 'fc1', relu=True)
+          self.fc2 = self.fc(self.fc1 , 20, 3, 'fc2', relu=False)
+        with tf.name_scope("loss"):
+          self.classification_loss = tf.softmax_cross_entropy_with_logits(labels=self.input_y_classification, logits=self.fc2, name='classification')
+          
+
       else:
         raise ValueError(" Loss function is not-defined")
 

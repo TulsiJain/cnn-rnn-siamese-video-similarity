@@ -103,7 +103,8 @@ with tf.Graph().as_default():
 
     tv = tf.trainable_variables()
     regularization_cost = tf.reduce_sum([ tf.nn.l2_loss(v) for v in tv ])
-    total_loss = siameseModel.loss + FLAGS.l2_reg_lambda*regularization_cost
+    total_loss = tf.add(tf.add(siameseModel.distance_loss, siameseModel.classification_loss ), FLAGS.l2_reg_lambda*regularization_cost, name='total_loss')
+
     grads_and_vars=optimizer.compute_gradients(total_loss)
     tr_op_set = optimizer.apply_gradients(grads_and_vars, global_step=global_step)
     print("defined training_ops")
@@ -158,7 +159,7 @@ with tf.Graph().as_default():
     train_writer = tf.summary.FileWriter(FLAGS.summaries_dir + '/train', graph=tf.get_default_graph())
     val_writer = tf.summary.FileWriter(FLAGS.summaries_dir + '/val' , graph=tf.get_default_graph())
 
-    def train_step(x1_batch, x2_batch, y_batch, video_lengths):
+    def train_step(x1_batch, x2_batch, y_batch, y_batch_classification, video_lengths):
 
         #A single training step
 
@@ -169,6 +170,7 @@ with tf.Graph().as_default():
                          siameseModel.input_x1: x1_batch,
                          siameseModel.input_x2: x2_batch,
                          siameseModel.input_y: y_batch,
+                         siameseModel.input_y_classifcation: y_batch_classification,
                          siameseModel.dropout_keep_prob: FLAGS.dropout_keep_prob,
                          siameseModel.video_lengths: video_lengths,
         }
@@ -183,7 +185,7 @@ with tf.Graph().as_default():
         print(y_batch, dist, d)
         return summary, np.sum(correct), loss
 
-    def dev_step(x1_batch, x2_batch, y_batch, video_lengths, dev_iter, epoch):
+    def dev_step(x1_batch, x2_batch, y_batch, y_batch_classification, video_lengths, dev_iter, epoch):
 
         #A single training step
 
@@ -194,6 +196,7 @@ with tf.Graph().as_default():
                          siameseModel.input_x1: x1_batch,
                          siameseModel.input_x2: x2_batch,
                          siameseModel.input_y: y_batch,
+                         siameseModel.input_y_classifcation: y_batch_classification,
                          siameseModel.dropout_keep_prob: FLAGS.dropout_keep_prob,
                          siameseModel.video_lengths: video_lengths,
         }
@@ -211,7 +214,7 @@ with tf.Graph().as_default():
 
     # Generate batches
     batches=inpH.batch_iter(
-                train_set[0], train_set[1], train_set[2], train_set[3], FLAGS.batch_size, FLAGS.num_epochs, convModel.spec, shuffle=True, is_train=False)
+                train_set[0], train_set[1], train_set[2], train_set[3], train_set[4], FLAGS.batch_size, FLAGS.num_epochs, convModel.spec, shuffle=True, is_train=False)
 
     ptr=0
     max_validation_correct=0.0
@@ -227,13 +230,13 @@ with tf.Graph().as_default():
         val_epoch_loss=0.0
         val_results = []
         print("\nEvaluation:")
-        dev_batches = inpH.batch_iter(dev_set[0],dev_set[1],dev_set[2],dev_set[3], FLAGS.batch_size, 1, convModel.spec, shuffle=False , is_train=False)
+        dev_batches = inpH.batch_iter(dev_set[0],dev_set[1],dev_set[2],dev_set[3],dev_step[4], FLAGS.batch_size, 1, convModel.spec, shuffle=False , is_train=False)
         dev_iter=0
-        for (x1_dev_b,x2_dev_b,y_dev_b, dev_video_lengths) in dev_batches:
+        for (x1_dev_b,x2_dev_b,y_dev_b, y_dev_b_classification, dev_video_lengths) in dev_batches:
             if len(y_dev_b)<1:
                 continue
             dev_iter += 1
-            summary, batch_val_correct , val_batch_loss, batch_results = dev_step(x1_dev_b, x2_dev_b, y_dev_b, dev_video_lengths, dev_iter,nn)
+            summary, batch_val_correct , val_batch_loss, batch_results = dev_step(x1_dev_b, x2_dev_b, y_dev_b, y_dev_b_classification, dev_video_lengths, dev_iter,nn)
             val_results = np.concatenate([val_results, batch_results])
             sum_val_correct = sum_val_correct + batch_val_correct
             current_step = tf.train.global_step(sess, global_step)
@@ -250,10 +253,10 @@ with tf.Graph().as_default():
         sum_train_correct=0.0
         train_epoch_loss=0.0
         for kk in xrange(sum_no_of_batches):
-            x1_batch, x2_batch, y_batch, video_lengths = batches.next()
+            x1_batch, x2_batch, y_batch, y_batch_classification, video_lengths = batches.next()
             if len(y_batch)<1:
                 continue
-            summary, train_batch_correct, train_batch_loss =train_step(x1_batch, x2_batch, y_batch, video_lengths)
+            summary, train_batch_correct, train_batch_loss =train_step(x1_batch, x2_batch, y_batch, y_batch_classification, video_lengths)
             train_writer.add_summary(summary, current_step)
             sum_train_correct = sum_train_correct + train_batch_correct
             train_epoch_loss = train_epoch_loss + train_batch_loss* len(y_batch)
