@@ -138,20 +138,20 @@ class InputHelper(object):
                 x1_shuffled=x1[shuffle_indices]
                 x2_shuffled=x2[shuffle_indices]
                 y_shuffled=y[shuffle_indices]
-                y_classication_shuffled=y_classication[shuffle_indices]
+                y_classfication_shuffled=y_classfication[shuffle_indices]
                 video_lengths_shuffled = video_lengths[shuffle_indices]
             else:
                 x1_shuffled=x1
                 x2_shuffled=x2
                 y_shuffled=y
-                y_classication_shuffled=y_classication[shuffle_indices]
+                y_classfication_shuffled=y_classfication
                 video_lengths_shuffled = video_lengths
             for batch_num in range(num_batches_per_epoch):
                 start_index = batch_num * batch_size
                 end_index = min((batch_num + 1) * batch_size, data_size)
 
                 processed_imgs = self.load_preprocess_images(x1_shuffled[start_index:end_index], x2_shuffled[start_index:end_index], conv_model_spec, epoch ,is_train)
-                yield( processed_imgs[0], processed_imgs[1] , y_shuffled[start_index:end_index], y_classication_shuffled[start_index:end_index], video_lengths_shuffled[start_index:end_index])
+                yield( processed_imgs[0], processed_imgs[1] , y_shuffled[start_index:end_index], y_classfication_shuffled[start_index:end_index], video_lengths_shuffled[start_index:end_index])
 
 
     def normalize_input(self, img, conv_model_spec):

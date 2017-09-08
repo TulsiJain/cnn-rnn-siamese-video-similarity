@@ -147,6 +147,7 @@ class SiameseLSTM(object):
           self.loss = tf.losses.mean_squared_error(self.input_y, self.distance)/batch_size
       elif loss == "contrastive":
         #with tf.name_scope("output"):
+        self.distance_feature = tf.add((tf.square(tf.subtract(self.out1,self.out2))), epsilon)
         self.distance = tf.sqrt(epsilon + tf.reduce_sum(tf.square(tf.subtract(self.out1,self.out2)),1,keep_dims=True))
         self.distance = tf.div(self.distance, tf.add(tf.sqrt(tf.reduce_sum(tf.square(self.out1),1,keep_dims=True)),tf.sqrt(tf.reduce_sum(tf.square(self.out2),1,keep_dims=True))))
         self.distance = tf.reshape(self.distance, [-1], name="distance")
@@ -155,11 +156,11 @@ class SiameseLSTM(object):
           self.distance_loss = self.contrastive_loss(self.input_y, self.distance, batch_size)
         #fc-layers and classification loss
         with tf.name_scope("fc_output"):
-          self.fc1 = self.fc(self.distance, hidden_unit_dim, 20, 'fc1', relu=True)
+          self.fc1 = self.fc(self.distance_feature, hidden_unit_dim*2, 20, 'fc1', relu=True)
           self.fc2 = self.fc(self.fc1 , 20, 3, 'fc2', relu=False)
         with tf.name_scope("loss"):
           self.classification_loss = tf.softmax_cross_entropy_with_logits(labels=self.input_y_classification, logits=self.fc2, name='classification')
-          
+          self.loss = tf.add(self.distance_loss, self.classification_loss, name='siamese_total_loss')
 
       else:
         raise ValueError(" Loss function is not-defined")

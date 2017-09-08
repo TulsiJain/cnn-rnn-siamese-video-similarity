@@ -170,7 +170,7 @@ with tf.Graph().as_default():
                          siameseModel.input_x1: x1_batch,
                          siameseModel.input_x2: x2_batch,
                          siameseModel.input_y: y_batch,
-                         siameseModel.input_y_classifcation: y_batch_classification,
+                         siameseModel.input_y_classification: y_batch_classification,
                          siameseModel.dropout_keep_prob: FLAGS.dropout_keep_prob,
                          siameseModel.video_lengths: video_lengths,
         }
@@ -196,7 +196,7 @@ with tf.Graph().as_default():
                          siameseModel.input_x1: x1_batch,
                          siameseModel.input_x2: x2_batch,
                          siameseModel.input_y: y_batch,
-                         siameseModel.input_y_classifcation: y_batch_classification,
+                         siameseModel.input_y_classification: y_batch_classification,
                          siameseModel.dropout_keep_prob: FLAGS.dropout_keep_prob,
                          siameseModel.video_lengths: video_lengths,
         }
@@ -230,7 +230,7 @@ with tf.Graph().as_default():
         val_epoch_loss=0.0
         val_results = []
         print("\nEvaluation:")
-        dev_batches = inpH.batch_iter(dev_set[0],dev_set[1],dev_set[2],dev_set[3],dev_step[4], FLAGS.batch_size, 1, convModel.spec, shuffle=False , is_train=False)
+        dev_batches = inpH.batch_iter(dev_set[0],dev_set[1],dev_set[2],dev_set[3],dev_set[4], FLAGS.batch_size, 1, convModel.spec, shuffle=False , is_train=False)
         dev_iter=0
         for (x1_dev_b,x2_dev_b,y_dev_b, y_dev_b_classification, dev_video_lengths) in dev_batches:
             if len(y_dev_b)<1:
